@@ -55,10 +55,10 @@ Website
 Coming soon...
 
 Email  
-hello@zurrilabs.com
+zurrilabs@gmail.com
 
 Instagram  
-@zurrilabs
+@zurrilabs.ar
 
 ---
 
