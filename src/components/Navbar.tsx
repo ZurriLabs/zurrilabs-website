@@ -185,7 +185,7 @@ export default function Navbar() {
                   </p>
 
                   <div className="flex gap-6 text-white/70">
-                    <a href="#">Instagram</a>
+                    <a href="https://www.instagram.com/zurrilabs.ar/">Instagram</a>
                     <a href="#">LinkedIn</a>
                     <a href="#">Github</a>
                   </div>
@@ -197,7 +197,7 @@ export default function Navbar() {
                   </p>
 
                   <p className="text-white/70">
-                    hola@zurrilabs.com
+                    zurrilabs@gmail.com
                   </p>
 
                   <p className="text-white/40">

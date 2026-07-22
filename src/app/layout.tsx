@@ -3,7 +3,8 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import SmoothScroll from "@/components/SmoothScroll";
-
+import CustomCursor from "@/components/CustomCursor";
+import Intro from "@/components/Intro";
 const geist = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,6 +23,8 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${geist.variable} h-full`}>
       <body className="bg-black text-white font-sans antialiased overflow-x-hidden">
+        <Intro />
+        <CustomCursor />
         <SmoothScroll>
           <Navbar />
           {children}

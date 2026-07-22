@@ -175,7 +175,7 @@ mb-1
                 EMAIL
               </p>
 
-              <p className="text-sm text-white/70">hola@zurrilabs.com</p>
+              <p className="text-sm text-white/70">zurrilabs@gmail.com</p>
             </div>
 
             <div>
@@ -191,24 +191,39 @@ mb-1
                 WHATSAPP
               </p>
 
-              <p className="text-sm text-white/70">+54 11 1234-5678</p>
+              <p className="text-sm text-white/70">+54 11 3905 7007</p>
             </div>
           </div>
 
           <div
-            className="
+  className="
 flex
 flex-row
 sm:flex-col
 gap-5
 mt-4
 "
-          >
-            {["Instagram", "LinkedIn", "X"].map((s) => (
-              <a
-                key={s}
-                href="#"
-                className="
+>
+  {[
+    {
+      name: "Instagram",
+      url: "https://www.instagram.com/zurrilabs.ar/",
+    },
+    {
+      name: "LinkedIn",
+      url: "https://linkedin.com",
+    },
+    {
+      name: "X",
+      url: "https://x.com",
+    },
+  ].map((social) => (
+    <a
+      key={social.name}
+      href={social.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="
 text-[10px]
 font-bold
 tracking-[0.25em]
@@ -217,11 +232,11 @@ text-white/30
 hover:text-white
 transition
 "
-              >
-                {s}
-              </a>
-            ))}
-          </div>
+    >
+      {social.name}
+    </a>
+  ))}
+</div>
         </motion.div>
 
         {/* FORM */}
