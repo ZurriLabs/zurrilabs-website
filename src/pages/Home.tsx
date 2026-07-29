@@ -5,6 +5,8 @@ import Reveal from '@/components/Reveal';
 import RegistrationMarks from '@/components/RegistrationMarks';
 import CursorSpotlight from '@/components/CursorSpotlight';
 import Annotation from '@/components/Annotation';
+import BrowserMockup from '@/components/BrowserMockup';
+import { projects } from '@/data/projects';
 
 const SERVICES = [
   {
@@ -30,23 +32,6 @@ const SERVICES = [
     title: 'Landing Pages',
     desc: 'Páginas de aterrizaje de alto rendimiento listas para campañas, con métricas y SEO desde el día uno.',
     tags: ['SEO', 'Performance', 'Campaña'],
-  },
-];
-
-const DESIGN_PROJECTS = [
-  {
-    id: 'P-01',
-    title: 'Boutique de Moda — Concepto UI',
-    category: 'E-commerce · Conceptual',
-    desc: 'Exploración de interfaz para una boutique de moda: navegación por colección, ficha de producto y carrito lateral.',
-    accent: 'Catálogo · Ficha · Checkout',
-  },
-  {
-    id: 'P-02',
-    title: 'Dashboard Empresarial — Concepto UI',
-    category: 'Producto · Conceptual',
-    desc: 'Sistema de paneles para una plataforma SaaS: KPIs, tablas de datos densas y flujos de configuración.',
-    accent: 'KPIs · Tablas · Settings',
   },
 ];
 
@@ -232,45 +217,61 @@ export default function Home() {
         <CursorSpotlight />
         <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-28">
           <Reveal>
-            <Annotation coord="C-01">Trabajo de Diseño</Annotation>
+            <Annotation coord="C-01">Trabajo de Selección</Annotation>
             <h2 className="mt-3 max-w-2xl text-3xl sm:text-4xl" style={{ color: 'var(--paper)' }}>
-              Proyectos conceptuales de interfaz
+              Proyectos Destacados
             </h2>
           </Reveal>
           <Reveal delay={80}>
             <p className="mt-4 max-w-xl text-sm leading-relaxed" style={{ color: 'var(--paper)', opacity: 0.7 }}>
-              Piezas de exploración de diseño. Son trabajos conceptuales de
-              portafolio — no son clientes reales y no incluyen métricas inventadas.
+              Selección de plataformas y sitios web desarrollados. Cada proyecto está presentado dentro de una simulación de navegador con enlace directo a su versión en vivo.
             </p>
           </Reveal>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
-            {DESIGN_PROJECTS.map((p, i) => (
-              <Reveal key={p.id} delay={i * 100}>
+          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {projects.map((p, i) => (
+              <Reveal key={p.id} delay={i * 80}>
                 <article
-                  className="group relative h-full overflow-hidden p-6 transition-colors duration-300"
+                  className="group flex h-full flex-col justify-between overflow-hidden p-5 transition-colors duration-300 sm:p-6"
                   style={{ background: 'var(--ink-3)', border: '1px solid var(--grid-soft)' }}
                 >
-                  {/* Conceptual frame mockup */}
-                  <div
-                    className="relative mb-6 aspect-[16/10] overflow-hidden bg-grid-fine"
-                    style={{ background: 'var(--ink-2)', border: '1px solid var(--grid-soft)' }}
-                  >
-                    <ProjectMockup id={p.id} />
-                    <span
-                      className="absolute left-3 top-3 font-mono-xs"
-                      style={{ color: 'var(--brass)' }}
-                    >
-                      {p.id} · CONCEPTO
-                    </span>
+                  <div>
+                    <BrowserMockup project={p} />
+                    <div className="mt-5 flex items-center justify-between">
+                      <span className="font-mono-xs" style={{ color: 'var(--accent)' }}>
+                        {p.category}
+                      </span>
+                    </div>
+                    <h3 className="mt-2 text-xl font-semibold" style={{ color: 'var(--paper)' }}>
+                      {p.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed" style={{ color: 'var(--grid)' }}>
+                      {p.description}
+                    </p>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono-xs" style={{ color: 'var(--accent)' }}>{p.category}</span>
-                  </div>
-                  <h3 className="mt-3 text-xl" style={{ color: 'var(--paper)' }}>{p.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed" style={{ color: 'var(--grid)' }}>{p.desc}</p>
-                  <p className="mt-4 font-mono-xs" style={{ color: 'var(--brass)' }}>{p.accent}</p>
+                  {p.liveUrl ? (
+                    <div className="mt-6 border-t border-[var(--grid-soft)] pt-4">
+                      <a
+                        href={p.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-wider text-[var(--paper)] uppercase transition-colors hover:text-[var(--accent)]"
+                      >
+                        VER SITIO EN VIVO
+                        <ArrowUpRight size={14} />
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="mt-6 border-t border-[var(--grid-soft)] pt-4">
+                      <span
+                        title="Próximamente"
+                        className="font-mono text-xs text-[var(--grid)] uppercase"
+                      >
+                        PRÓXIMAMENTE
+                      </span>
+                    </div>
+                  )}
                 </article>
               </Reveal>
             ))}
@@ -403,79 +404,5 @@ export default function Home() {
         </div>
       </section>
     </>
-  );
-}
-
-/** Small decorative wireframe mockups for the conceptual projects. */
-function ProjectMockup({ id }: { id: string }) {
-  if (id === 'P-01') {
-    // Fashion e-commerce concept
-    return (
-      <svg viewBox="0 0 320 200" className="h-full w-full" fill="none" aria-hidden="true">
-        <rect x="12" y="12" width="296" height="176" stroke="var(--grid)" strokeWidth="1" />
-        <line x1="12" y1="34" x2="308" y2="34" stroke="var(--grid)" strokeWidth="1" />
-        <line x1="120" y1="34" x2="120" y2="188" stroke="var(--grid)" strokeWidth="1" />
-        {/* product grid */}
-        {[0, 1, 2].map((r) =>
-          [0, 1, 2].map((c) => (
-            <g key={`${r}-${c}`}>
-              <rect
-                x={134 + c * 56}
-                y={48 + r * 44}
-                width="44"
-                height="36"
-                stroke="var(--grid-soft)"
-                strokeWidth="1"
-                fill="none"
-              />
-              <line
-                x1={134 + c * 56}
-                y1={88 + r * 44}
-                x2={134 + c * 56 + 30}
-                y2={88 + r * 44}
-                stroke="var(--grid-soft)"
-                strokeWidth="1"
-              />
-            </g>
-          ))
-        )}
-        {/* sidebar items */}
-        <line x1="24" y1="50" x2="108" y2="50" stroke="var(--brass)" strokeWidth="1" />
-        <line x1="24" y1="64" x2="108" y2="64" stroke="var(--grid-soft)" strokeWidth="1" />
-        <line x1="24" y1="78" x2="108" y2="78" stroke="var(--grid-soft)" strokeWidth="1" />
-        <line x1="24" y1="92" x2="108" y2="92" stroke="var(--grid-soft)" strokeWidth="1" />
-        <rect x="24" y="150" width="80" height="22" stroke="var(--accent)" strokeWidth="1" fill="none" />
-      </svg>
-    );
-  }
-  // Dashboard concept
-  return (
-    <svg viewBox="0 0 320 200" className="h-full w-full" fill="none" aria-hidden="true">
-      <rect x="12" y="12" width="296" height="176" stroke="var(--grid)" strokeWidth="1" />
-      <line x1="12" y1="34" x2="308" y2="34" stroke="var(--grid)" strokeWidth="1" />
-      <line x1="80" y1="34" x2="80" y2="188" stroke="var(--grid)" strokeWidth="1" />
-      {/* KPI cards */}
-      <rect x="92" y="44" width="64" height="34" stroke="var(--grid-soft)" strokeWidth="1" fill="none" />
-      <rect x="164" y="44" width="64" height="34" stroke="var(--grid-soft)" strokeWidth="1" fill="none" />
-      <rect x="236" y="44" width="60" height="34" stroke="var(--grid-soft)" strokeWidth="1" fill="none" />
-      {/* chart */}
-      <polyline
-        points="92,120 120,108 148,128 176,96 204,112 232,88 260,104 296,92"
-        stroke="var(--accent)"
-        strokeWidth="1.5"
-        fill="none"
-      />
-      <line x1="92" y1="150" x2="296" y2="150" stroke="var(--grid-soft)" strokeWidth="1" />
-      {/* table rows */}
-      {[0, 1, 2].map((r) => (
-        <line key={r} x1="92" y1={162 + r * 8} x2="296" y2={162 + r * 8} stroke="var(--grid-soft)" strokeWidth="1" />
-      ))}
-      {/* sidebar */}
-      <line x1="24" y1="48" x2="68" y2="48" stroke="var(--brass)" strokeWidth="1" />
-      <line x1="24" y1="62" x2="68" y2="62" stroke="var(--grid-soft)" strokeWidth="1" />
-      <line x1="24" y1="76" x2="68" y2="76" stroke="var(--grid-soft)" strokeWidth="1" />
-      <line x1="24" y1="90" x2="68" y2="90" stroke="var(--grid-soft)" strokeWidth="1" />
-      <rect x="24" y="104" width="44" height="14" stroke="var(--accent)" strokeWidth="1" fill="none" />
-    </svg>
   );
 }
