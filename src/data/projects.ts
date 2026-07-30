@@ -35,7 +35,7 @@ export const rawProjects = [
     title: 'MZEN',
     description: 'E-commerce de moda de lujo, estética editorial.',
     screenshot: '/assets/mzen-preview.png',
-    liveUrl: 'https://mzen-omega.vercel.app/',
+    liveUrl: 'https://mzen-w3c6.vercel.app/',
     category: 'Fashion',
   },
   {
