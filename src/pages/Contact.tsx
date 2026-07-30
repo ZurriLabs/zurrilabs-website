@@ -1,43 +1,84 @@
-import { useState } from 'react';
-import { Mail, Phone, MapPin, MessageCircle, Check, Send } from 'lucide-react';
-import Reveal from '@/components/Reveal';
-import RegistrationMarks from '@/components/RegistrationMarks';
-import CursorSpotlight from '@/components/CursorSpotlight';
-import Annotation from '@/components/Annotation';
+import { useState } from "react";
+import { Mail, Phone, MapPin, MessageCircle, Check, Send } from "lucide-react";
+import Reveal from "@/components/Reveal";
+import RegistrationMarks from "@/components/RegistrationMarks";
+import CursorSpotlight from "@/components/CursorSpotlight";
+import Annotation from "@/components/Annotation";
+import { useState } from "react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  MessageCircle,
+  Check,
+  Send,
+  Loader2,
+} from "lucide-react";
 
 const PROJECT_TYPES = [
-  'Landing Page',
-  'Sitio Institucional',
-  'Tienda / E-commerce',
-  'Diseño de Interfaz (UI)',
-  'Mantenimiento',
-  'Otro',
+  "Landing Page",
+  "Sitio Institucional",
+  "Tienda / E-commerce",
+  "Diseño de Interfaz (UI)",
+  "Mantenimiento",
+  "Otro",
 ];
 
 const BUDGET_RANGES = [
-  'Hasta $150.000 ARS',
-  '$150.000 – $300.000 ARS',
-  '$300.000 – $600.000 ARS',
-  'Más de $600.000 ARS',
+  "Hasta $150.000 ARS",
+  "$150.000 – $300.000 ARS",
+  "$300.000 – $600.000 ARS",
+  "Más de $600.000 ARS",
 ];
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    type: '',
-    budget: '',
-    message: '',
+    name: "",
+    email: "",
+    type: "",
+    budget: "",
+    message: "",
   });
 
   const update = (k: keyof typeof form, v: string) =>
     setForm((f) => ({ ...f, [k]: v }));
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // UI-only: no backend. Simulate success.
-    setSent(true);
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          service: form.type, // mapeo: "type" del form -> "service" que espera la API
+          budget: form.budget,
+          message: form.message,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Error al enviar el mensaje");
+      }
+
+      setSent(true);
+    } catch (err) {
+      console.error(err);
+      setError(
+        "No se pudo enviar el mensaje. Probá de nuevo o escribime por WhatsApp.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,19 +86,25 @@ export default function Contact() {
       {/* Header */}
       <section
         className="relative overflow-hidden bg-grid-dark"
-        style={{ background: 'var(--ink)' }}
+        style={{ background: "var(--ink)" }}
       >
         <CursorSpotlight />
         <RegistrationMarks />
         <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-32 sm:px-8 sm:pt-40">
           <Reveal>
             <Annotation coord="C-00">Contacto</Annotation>
-            <h1 className="mt-4 max-w-3xl text-balance text-4xl leading-[1.05] sm:text-5xl" style={{ color: 'var(--paper)' }}>
+            <h1
+              className="mt-4 max-w-3xl text-balance text-4xl leading-[1.05] sm:text-5xl"
+              style={{ color: "var(--paper)" }}
+            >
               Empecemos por una conversación
             </h1>
           </Reveal>
           <Reveal delay={80}>
-            <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed" style={{ color: 'var(--paper)', opacity: 0.7 }}>
+            <p
+              className="mt-6 max-w-xl text-pretty text-base leading-relaxed"
+              style={{ color: "var(--paper)", opacity: 0.7 }}
+            >
               Contame de qué se trata tu proyecto y te respondo con un alcance,
               un plazo y un precio en pesos. Respuesta directa, sin formularios
               automáticos.
@@ -69,33 +116,59 @@ export default function Contact() {
       {/* Form + info */}
       <section
         className="relative overflow-hidden"
-        style={{ background: 'var(--paper)', color: 'var(--ink)' }}
+        style={{ background: "var(--paper)", color: "var(--ink)" }}
       >
-        <div className="bg-grid-paper absolute inset-0 opacity-60" aria-hidden="true" />
+        <div
+          className="bg-grid-paper absolute inset-0 opacity-60"
+          aria-hidden="true"
+        />
         <div className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8 sm:py-24">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
             {/* Form */}
             <div className="lg:col-span-7">
               <Reveal>
-                <div className="p-7 sm:p-9" style={{ background: 'var(--paper)', border: '1px solid var(--line-light)' }}>
+                <div
+                  className="p-7 sm:p-9"
+                  style={{
+                    background: "var(--paper)",
+                    border: "1px solid var(--line-light)",
+                  }}
+                >
                   {sent ? (
                     <div className="flex flex-col items-center justify-center py-16 text-center">
                       <span
                         className="flex h-14 w-14 items-center justify-center rounded-full"
-                        style={{ background: 'var(--accent)', color: 'var(--paper)' }}
+                        style={{
+                          background: "var(--accent)",
+                          color: "var(--paper)",
+                        }}
                       >
                         <Check size={26} />
                       </span>
-                      <h2 className="mt-6 text-2xl" style={{ color: 'var(--ink)' }}>Mensaje enviado</h2>
-                      <p className="mt-3 max-w-sm text-sm leading-relaxed" style={{ color: '#5a5346' }}>
-                        Gracias, {form.name || 'visitante'}. Te respondo a la
+                      <h2
+                        className="mt-6 text-2xl"
+                        style={{ color: "var(--ink)" }}
+                      >
+                        Mensaje enviado
+                      </h2>
+                      <p
+                        className="mt-3 max-w-sm text-sm leading-relaxed"
+                        style={{ color: "#5a5346" }}
+                      >
+                        Gracias, {form.name || "visitante"}. Te respondo a la
                         brevedad al correo que indicaste. Si es urgente, podés
                         escribirme directo por WhatsApp.
                       </p>
                       <button
                         onClick={() => {
                           setSent(false);
-                          setForm({ name: '', email: '', type: '', budget: '', message: '' });
+                          setForm({
+                            name: "",
+                            email: "",
+                            type: "",
+                            budget: "",
+                            message: "",
+                          });
                         }}
                         className="btn-ghost-paper mt-8"
                       >
@@ -105,8 +178,15 @@ export default function Contact() {
                   ) : (
                     <>
                       <div className="flex items-center justify-between">
-                        <Annotation coord="C-01">Formulario de proyecto</Annotation>
-                        <span className="font-mono-xs" style={{ color: 'var(--brass-2)' }}>REV. 01</span>
+                        <Annotation coord="C-01">
+                          Formulario de proyecto
+                        </Annotation>
+                        <span
+                          className="font-mono-xs"
+                          style={{ color: "var(--brass-2)" }}
+                        >
+                          REV. 01
+                        </span>
                       </div>
 
                       <form onSubmit={onSubmit} className="mt-8 space-y-6">
@@ -115,7 +195,7 @@ export default function Contact() {
                             type="text"
                             required
                             value={form.name}
-                            onChange={(e) => update('name', e.target.value)}
+                            onChange={(e) => update("name", e.target.value)}
                             placeholder="Tu nombre"
                             className="form-input"
                           />
@@ -126,7 +206,7 @@ export default function Contact() {
                             type="email"
                             required
                             value={form.email}
-                            onChange={(e) => update('email', e.target.value)}
+                            onChange={(e) => update("email", e.target.value)}
                             placeholder="tu@email.com"
                             className="form-input"
                           />
@@ -138,7 +218,7 @@ export default function Contact() {
                               <button
                                 key={t}
                                 type="button"
-                                onClick={() => update('type', t)}
+                                onClick={() => update("type", t)}
                                 className="chip"
                                 data-active={form.type === t}
                               >
@@ -154,7 +234,7 @@ export default function Contact() {
                               <button
                                 key={b}
                                 type="button"
-                                onClick={() => update('budget', b)}
+                                onClick={() => update("budget", b)}
                                 className="chip"
                                 data-active={form.budget === b}
                               >
@@ -169,15 +249,34 @@ export default function Contact() {
                             required
                             rows={5}
                             value={form.message}
-                            onChange={(e) => update('message', e.target.value)}
+                            onChange={(e) => update("message", e.target.value)}
                             placeholder="Contame sobre el proyecto, objetivos y plazos..."
                             className="form-input resize-none"
                           />
                         </Field>
 
-                        <button type="submit" className="btn-accent w-full justify-center">
-                          Enviar mensaje
-                          <Send size={15} />
+                        {error && (
+                          <p className="text-sm" style={{ color: "#c0392b" }}>
+                            {error}
+                          </p>
+                        )}
+
+                        <button
+                          type="submit"
+                          className="btn-accent w-full justify-center"
+                          disabled={loading}
+                        >
+                          {loading ? (
+                            <>
+                              Enviando...
+                              <Loader2 size={15} className="animate-spin" />
+                            </>
+                          ) : (
+                            <>
+                              Enviar mensaje
+                              <Send size={15} />
+                            </>
+                          )}
                         </button>
                       </form>
                     </>
@@ -190,19 +289,54 @@ export default function Contact() {
             <div className="lg:col-span-5">
               <Reveal delay={100}>
                 <div className="space-y-6">
-                  <div className="p-7" style={{ background: 'var(--paper)', border: '1px solid var(--line-light)' }}>
+                  <div
+                    className="p-7"
+                    style={{
+                      background: "var(--paper)",
+                      border: "1px solid var(--line-light)",
+                    }}
+                  >
                     <Annotation coord="C-02">Contacto directo</Annotation>
                     <ul className="mt-6 space-y-5">
-                      <ContactRow icon={Phone} label="Teléfono" value="+54 11 1234-5678" href="tel:+541112345678" />
-                      <ContactRow icon={MessageCircle} label="WhatsApp" value="Escribir por WhatsApp" href="https://wa.me/5491112345678" external />
-                      <ContactRow icon={Mail} label="Email" value="hola@zurrilabs.com" href="mailto:hola@zurrilabs.com" />
-                      <ContactRow icon={MapPin} label="Ubicación" value="Buenos Aires, Argentina" />
+                      <ContactRow
+                        icon={Phone}
+                        label="Teléfono"
+                        value="+54 11 1234-5678"
+                        href="tel:+541112345678"
+                      />
+                      <ContactRow
+                        icon={MessageCircle}
+                        label="WhatsApp"
+                        value="Escribir por WhatsApp"
+                        href="https://wa.me/5491112345678"
+                        external
+                      />
+                      <ContactRow
+                        icon={Mail}
+                        label="Email"
+                        value="hola@zurrilabs.com"
+                        href="mailto:hola@zurrilabs.com"
+                      />
+                      <ContactRow
+                        icon={MapPin}
+                        label="Ubicación"
+                        value="Buenos Aires, Argentina"
+                      />
                     </ul>
                   </div>
 
-                  <div className="p-7" style={{ background: 'var(--paper)', border: '1px solid var(--line-light)' }}>
+                  <div
+                    className="p-7"
+                    style={{
+                      background: "var(--paper)",
+                      border: "1px solid var(--line-light)",
+                    }}
+                  >
                     <Annotation coord="C-03">Horario</Annotation>
-                    <p className="mt-5 text-sm leading-relaxed" style={{ color: '#5a5346' }}>
+                    <p
+                      className="mt-5 text-sm leading-relaxed"
+                      style={{ color: "#5a5346" }}
+                    >
                       Lunes a viernes, 9 a 18 hs (ART). Respondo dentro de las
                       24 hs hábiles. Para proyectos urgentes, WhatsApp es lo más
                       rápido.
@@ -218,10 +352,18 @@ export default function Contact() {
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <label className="block">
-      <span className="font-mono-xs" style={{ color: 'var(--brass-2)' }}>{label}</span>
+      <span className="font-mono-xs" style={{ color: "var(--brass-2)" }}>
+        {label}
+      </span>
       <div className="mt-2">{children}</div>
     </label>
   );
@@ -244,13 +386,21 @@ function ContactRow({
     <div className="flex items-center gap-3.5">
       <span
         className="flex h-9 w-9 shrink-0 items-center justify-center"
-        style={{ background: 'var(--paper-2)', color: 'var(--accent)', border: '1px solid var(--line-light)' }}
+        style={{
+          background: "var(--paper-2)",
+          color: "var(--accent)",
+          border: "1px solid var(--line-light)",
+        }}
       >
         <Icon size={16} />
       </span>
       <div>
-        <p className="font-mono-xs" style={{ color: 'var(--brass-2)' }}>{label}</p>
-        <p className="mt-0.5 text-sm" style={{ color: 'var(--ink)' }}>{value}</p>
+        <p className="font-mono-xs" style={{ color: "var(--brass-2)" }}>
+          {label}
+        </p>
+        <p className="mt-0.5 text-sm" style={{ color: "var(--ink)" }}>
+          {value}
+        </p>
       </div>
     </div>
   );
@@ -259,8 +409,8 @@ function ContactRow({
   return (
     <a
       href={href}
-      target={external ? '_blank' : undefined}
-      rel={external ? 'noopener noreferrer' : undefined}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
       className="block transition-opacity duration-200 hover:opacity-70"
     >
       {content}
