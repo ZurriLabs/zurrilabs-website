@@ -51,13 +51,13 @@ export default function Footer() {
               <li className="flex items-center gap-2.5">
                 <Phone size={15} style={{ color: 'var(--brass)' }} />
                 <a href="tel:+541112345678" className="hover:text-[var(--accent)] transition-colors">
-                  +54 11 1234-5678
+                  +54 11 3905-7007
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <MessageCircle size={15} style={{ color: 'var(--brass)' }} />
                 <a
-                  href="https://wa.me/5491112345678"
+                  href="https://wa.me/5491139057007"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-[var(--accent)] transition-colors"
@@ -68,10 +68,10 @@ export default function Footer() {
               <li className="flex items-center gap-2.5">
                 <Mail size={15} style={{ color: 'var(--brass)' }} />
                 <a
-                  href="mailto:hola@zurrilabs.com"
+                  href="mailto:zurrilabs@gmail.com"
                   className="hover:text-[var(--accent)] transition-colors"
                 >
-                  hola@zurrilabs.com
+                  zurrilabs@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2.5">

@@ -301,21 +301,21 @@ export default function Contact() {
                       <ContactRow
                         icon={Phone}
                         label="Teléfono"
-                        value="+54 11 1234-5678"
-                        href="tel:+541112345678"
+                        value="+54 11 3905-7007"
+                        href="tel:+541139057007"
                       />
                       <ContactRow
                         icon={MessageCircle}
                         label="WhatsApp"
                         value="Escribir por WhatsApp"
-                        href="https://wa.me/5491112345678"
+                        href="https://wa.me/5491139057007"
                         external
                       />
                       <ContactRow
                         icon={Mail}
                         label="Email"
-                        value="hola@zurrilabs.com"
-                        href="mailto:hola@zurrilabs.com"
+                        value="zurrilabs@gmail.com"
+                        href="mailto:zurrilabs@gmail.com"
                       />
                       <ContactRow
                         icon={MapPin}
