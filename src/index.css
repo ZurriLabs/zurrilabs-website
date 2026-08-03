@@ -270,7 +270,7 @@
   .text-pretty { text-wrap: pretty; }
 }
 
-/* ===== Keyframe animations (transform/opacity/stroke-dashoffset only) ===== */
+/* ===== Keyframe animations ===== */
 
 @keyframes dash-draw {
   from { stroke-dashoffset: var(--len, 1000); }
@@ -278,35 +278,55 @@
 }
 
 @keyframes march {
-  to { stroke-dashoffset: -16; }
+  to { stroke-dashoffset: -18; }
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.35; transform: scale(0.7); }
+  0%, 100% { opacity: 1;    transform: scale(1);   }
+  50%       { opacity: 0.2; transform: scale(0.55); }
 }
 
 @keyframes travel {
-  to { offset-distance: 100%; }
+  from { offset-distance: 0%; }
+  to   { offset-distance: 100%; }
+}
+
+/* Second marker starts at 50% offset for a chase effect */
+@keyframes travel-b {
+  from { offset-distance: 50%; }
+  to   { offset-distance: 150%; }
 }
 
 @keyframes float-soft {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50%      { transform: translateY(-6px); }
 }
 
 @keyframes blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
+  50%      { opacity: 0.15; }
+}
+
+@keyframes scanline {
+  0%   { background-position: 0 -60px; }
+  100% { background-position: 0 100%; }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 0.2; }
 }
 
 /* Animation utility classes */
-.anim-draw { animation: dash-draw var(--dur, 2.4s) cubic-bezier(0.65, 0, 0.35, 1) forwards; }
-.anim-march { animation: march 1s linear infinite; }
-.anim-pulse-dot { animation: pulse-dot 1.6s ease-in-out infinite; }
-.anim-travel { animation: travel var(--travel-dur, 6s) linear infinite; }
-.anim-float { animation: float-soft 4s ease-in-out infinite; }
-.anim-blink { animation: blink 1.4s steps(2, end) infinite; }
+.anim-draw        { animation: dash-draw var(--dur, 2.4s) cubic-bezier(0.5, 0, 0.2, 1) both; }
+.anim-march       { animation: march 0.9s linear infinite; }
+.anim-pulse-dot   { animation: pulse-dot 1.8s ease-in-out infinite; }
+.anim-travel      { animation: travel   var(--travel-dur, 6s) linear infinite; }
+.anim-travel-b    { animation: travel-b var(--travel-dur, 6s) linear infinite; }
+.anim-float       { animation: float-soft 4s ease-in-out infinite; }
+.anim-blink       { animation: blink 1.4s steps(2, end) infinite; }
+.anim-scanline    { animation: scanline 1.6s linear forwards; }
+.anim-pulse-subtle{ animation: pulse-subtle 2.2s ease-in-out infinite; }
 
 /* Reduced motion: instant final state, no motion */
 @media (prefers-reduced-motion: reduce) {
@@ -326,8 +346,11 @@
   .anim-march,
   .anim-pulse-dot,
   .anim-travel,
+  .anim-travel-b,
   .anim-float,
-  .anim-blink {
+  .anim-blink,
+  .anim-scanline,
+  .anim-pulse-subtle {
     animation: none !important;
   }
 }

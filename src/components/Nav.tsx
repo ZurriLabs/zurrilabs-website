@@ -36,14 +36,12 @@ export default function Nav() {
       }}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
-        <Link to="/" className="flex items-center gap-2.5" aria-label="Zurri Labs — Inicio">
-          <LogoMark />
-          <span
-            className="font-mono-label"
-            style={{ color: 'var(--paper)', letterSpacing: '0.16em' }}
-          >
-            Zurri<span style={{ color: 'var(--accent)' }}>.</span>Labs
-          </span>
+        <Link to="/" className="flex items-center" aria-label="Zurri Labs — Inicio">
+          <img
+            src="/src/assets/LogoNavCropped.png"
+            alt="Zurri Labs"
+            style={{ height: '28px', width: 'auto', objectFit: 'contain', display: 'block' }}
+          />
         </Link>
 
         {/* Desktop */}

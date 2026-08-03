@@ -1,19 +1,9 @@
 import { useState } from "react";
-import { Mail, Phone, MapPin, MessageCircle, Check, Send } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Check, Send, Loader2 } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import RegistrationMarks from "@/components/RegistrationMarks";
 import CursorSpotlight from "@/components/CursorSpotlight";
 import Annotation from "@/components/Annotation";
-import { useState } from "react";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  MessageCircle,
-  Check,
-  Send,
-  Loader2,
-} from "lucide-react";
 
 const PROJECT_TYPES = [
   "Landing Page",
